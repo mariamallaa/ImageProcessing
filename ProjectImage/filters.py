@@ -63,32 +63,35 @@ while True:
         
         #finding the eyemap
         
-        eyemap=geteyemap(resized_image)
+        
 
-        show_images([resized_image,eyemap])
-        arrnp=[]
-        factor=0.3
-        #while arrnp.count==0:
-        thresh =np.max(eyemap)*factor
-        print(eyemap)
-        print(thresh)
-        print(np.max(eyemap))
-        print("the ")
-        eyemap[eyemap<thresh]=0
-        eyemap[eyemap>thresh]=1
-        print(eyemap)
+        
+        arrnp= np.array([])
 
-        show_images([resized_image,eyemap])
-
-
-        eyemap= erode(eyemap,windowsize,orgin)
-        eyemap= dilate(eyemap,windowsize,orgin)
+        factor=0.7
+        while arrnp.size==0:
+            eyemap=geteyemap(resized_image)
             
-        eyemap= erodesmall(eyemap,windowsize,orgin)
-            
+            thresh =np.max(eyemap)*factor
+            print(eyemap)
+            print(thresh)
+            print(np.max(eyemap))
+            print("the ")
+            eyemap[eyemap<thresh]=0
+            eyemap[eyemap>thresh]=1
+            print(eyemap)
 
-        arrnp=distance(eyemap, 125,90)
-        factor-=0.1
+            show_images([resized_image,eyemap])
+
+
+            eyemap= erode(eyemap,windowsize,orgin)
+            eyemap= dilate(eyemap,windowsize,orgin)
+                
+            eyemap= erodesmall(eyemap,windowsize,orgin)
+                
+
+            arrnp=distance(eyemap, 125,90)
+            factor-=0.1
 
         #print(arrnp)
         #print(arrnp.count)
