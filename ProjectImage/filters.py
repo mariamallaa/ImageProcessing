@@ -26,7 +26,7 @@ cam = cv2.VideoCapture(0)
 cv2.namedWindow("test")
 
 #creating adaboost trained model using cv2
-face_cascade = cv2.CascadeClassifier('C:\\opencv\\build\\etc\\haarcascades\\haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('C:\\Users\\xps\\Downloads\\opencv\\build\\etc\\haarcascades\\haarcascade_frontalface_default.xml')
 
 #val = input("press 1 for camera image press 2 for choosing an image from your computer: ")
 
@@ -38,7 +38,7 @@ while True:
 
     #reading an exisiting image
 
-    img =  io.imread("friends1.jpg").astype('uint8')
+    img =  io.imread("C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\friends1.jpg").astype('uint8')
     show_images([img])
 
 
@@ -102,23 +102,35 @@ while True:
         lefti = np.mean(arrnp[:,2])
         leftj = np.mean(arrnp[:,3])
         eyearr=np.asarray([righti,rightj,lefti,leftj])
+        degree=0
+        if(righti>lefti and righti-lefti>10):
+            degree=20
+        elif(righti<lefti and lefti-righti>10):
+            degree=-20
 
+        print("mirna")
+        print(eyearr)
         eyearr=eyearr.astype('uint16')
+        
         new_croppedimg=np.zeros(eyemap.shape)
 
         new_croppedimg[eyearr[0],eyearr[1]]=1
 
         new_croppedimg[eyearr[2],eyearr[3]]=1
+        
         show_images([new_croppedimg])
 
-
+        distanceofeye = math.sqrt((eyearr[0]-eyearr[2])**2+(eyearr[3]-eyearr[1])**2)
         midpointx= int((eyearr[0]+eyearr[2])/2)
         midpointy= int((eyearr[1]+eyearr[3])/2)
+        #nose
+        nosex = int((distanceofeye+midpointx) *0.78)
+        nosey = midpointy
 
-        
+        new_croppedimg[nosex,nosey]=1
        
-        img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w)
-        
+        #img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w,degree)
+        img[yt:yt+h,x:x+w ,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
 
         #cv2.imshow("test", img)
 

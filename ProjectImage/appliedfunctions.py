@@ -9,6 +9,7 @@ from skimage.morphology import binary_erosion, binary_dilation
 from skimage import exposure
 import cv2
 from skimage.filters import threshold_otsu
+from skimage.transform import rotate
 
 
 ######################################################################################################
@@ -94,20 +95,21 @@ def distance(img, ic,jc):
                         if(img[n][m]==1):
                             dist2= math.sqrt((n-ic)**2 + (m-jc)**2)
                             if(abs(dist-dist2)/dist<30/100):
-                                arr.append([i,j,n,m])
-                                
+                                if(abs(i-n)<20):
+                                    arr.append([i,j,n,m])                                
     arrnp =np.asarray(arr)
     
     return arrnp
                     
 
 
-def sunglassesfilter(img,midpointx,midpointy,h,w):
+def sunglassesfilter(img,midpointx,midpointy,h,w,degree):
             sunglass_image = io.imread('sun.jpg')
 
 
             resized_sunglass=resize(sunglass_image[0:600,:],(100,150))
-            
+            if(degree!=0):
+                resized_sunglass=rotate(resized_sunglass, degree,cval=1)
 
             resized_sunglass[resized_sunglass>=0.99607843]=1
             resized_sunglass[resized_sunglass<0.99607843]=0
@@ -124,8 +126,26 @@ def sunglassesfilter(img,midpointx,midpointy,h,w):
 
 
 
+def clown_nose_filter(img,nosex,nosey,h,w,degree):
+        clown_nose= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\clown-nose.jpg')
+        resized_clown_nose=resize(clown_nose[0:500,0:500],(70,100))
+        if(degree!=0):
+                resized_clown_nose=rotate(resized_clown_nose, degree,cval=1)
+        
+        resized_clown_nose[resized_clown_nose>=0.8]=1
+        resized_clown_nose[resized_clown_nose<0.8]=0
+
+        for i in range(resized_clown_nose.shape[0]):
+            for j in range(resized_clown_nose.shape[1]):
+                if resized_clown_nose[i,j,1]==0:
+                    img[nosex-30+i,nosey-55+j]=(resized_clown_nose[i,j])
 
 
+        img=resize(img,(h,w))
+            
+        finalimg=(img*255).astype('uint8')
+        return finalimg
+    
 
 
 def geteyemap(img):
