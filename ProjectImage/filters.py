@@ -39,7 +39,7 @@ while True:
     #reading an exisiting image
 
     img =  io.imread("C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\friends1.jpg").astype('uint8')
-    show_images([img])
+    #show_images([img])
 
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -48,28 +48,26 @@ while True:
 
     for (x,yt,w,h) in faces:
 
-        
+        print("x,yt")
         #crop the face
         cropped_img = img[yt:yt+h,x:x+w ,:]
-
+        cropped_img2=img[yt-20:yt+h,x:x+w ,:]
         #removing noise
 
         filtered_img = gaussian(cropped_img, sigma=0.1,multichannel=False)
-
+        filtered_img = gaussian(cropped_img2, sigma=0.1,multichannel=False)
         #resize image
 
         resized_image=resize(cropped_img,(200,180))
-
-        
+        resized_image2=resize(cropped_img2,(200,180))
+        show_images([resized_image2])
         #finding the eyemap
         
         
-
-        
-        arrnp= np.array([])
-
+        eye_location= np.array([])
+       
         factor=0.7
-        while arrnp.size==0:
+        while eye_location.size==0:
             eyemap=geteyemap(resized_image)
             
             thresh =np.max(eyemap)*factor
@@ -81,7 +79,7 @@ while True:
             eyemap[eyemap>thresh]=1
             print(eyemap)
 
-            show_images([resized_image,eyemap])
+            #show_images([resized_image,eyemap])
 
 
             eyemap= erode(eyemap,windowsize,orgin)
@@ -90,17 +88,17 @@ while True:
             eyemap= erodesmall(eyemap,windowsize,orgin)
                 
 
-            arrnp=distance(eyemap, 125,90)
+            eye_location=distance(eyemap, 125,90)
             factor-=0.1
 
-        #print(arrnp)
-        #print(arrnp.count)
+        #print(eye_location)
+        #print(eye_location.count)
         show_images([resized_image,eyemap])
 
-        righti = np.mean(arrnp[:,0])
-        rightj = np.mean(arrnp[:,1])
-        lefti = np.mean(arrnp[:,2])
-        leftj = np.mean(arrnp[:,3])
+        righti = np.mean(eye_location[:,0])
+        rightj = np.mean(eye_location[:,1])
+        lefti = np.mean(eye_location[:,2])
+        leftj = np.mean(eye_location[:,3])
         eyearr=np.asarray([righti,rightj,lefti,leftj])
         degree=0
         if(righti>lefti and righti-lefti>10):
@@ -118,20 +116,20 @@ while True:
 
         new_croppedimg[eyearr[2],eyearr[3]]=1
         
-        show_images([new_croppedimg])
-
-        distanceofeye = math.sqrt((eyearr[0]-eyearr[2])**2+(eyearr[3]-eyearr[1])**2)
+        
         midpointx= int((eyearr[0]+eyearr[2])/2)
         midpointy= int((eyearr[1]+eyearr[3])/2)
         #nose
-        nosex = int((distanceofeye+midpointx) *0.78)
-        nosey = midpointy
+        #image_nose=resized_image[int(eyearr[0]):int(eyearr[0]*2),int(eyearr[1]):int(eyearr[3])]
+        #show_images([image_nose])
+        nosex,nosey= getnose(midpointx,midpointy,righti,lefti)
 
         new_croppedimg[nosex,nosey]=1
-       
-        #img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w,degree)
-        img[yt:yt+h,x:x+w ,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
-
+        show_images([new_croppedimg])
+        img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w,degree)
+        #img[yt:yt+h,x:x+w,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
+        
+        #img[yt-20:yt+h,x:x+w,:]=hatfilter(resized_image2,h,w,degree)
         #cv2.imshow("test", img)
 
         show_images([img])

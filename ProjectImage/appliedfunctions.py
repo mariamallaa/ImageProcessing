@@ -124,21 +124,42 @@ def sunglassesfilter(img,midpointx,midpointy,h,w,degree):
             finalimg=(img*255).astype('uint8')
             return finalimg
 
+def hatfilter(img,h,w,degree):
+            hat_image = io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\hat2.jpg')
 
+
+            resized_hat=resize(hat_image[0:700,:],(100,160))
+            
+            show_images([resized_hat])
+            
+            if(degree!=0):
+                resized_hat=rotate(resized_hat, degree,cval=1)
+               
+            resized_hat2=np.copy(resized_hat)
+            resized_hat[resized_hat>=0.7]=1
+            resized_hat[resized_hat<0.7]=0
+            
+            for i in range(resized_hat.shape[0]):
+                for j in range(resized_hat.shape[1]):
+                    if resized_hat[i,j,1]==0:
+                        img[i,j+20]=(resized_hat2[i,j])
+            img=resize(img,(h+20,w))
+            
+            finalimg=(img*255).astype('uint8')
+            return finalimg
 
 def clown_nose_filter(img,nosex,nosey,h,w,degree):
         clown_nose= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\clown-nose.jpg')
         resized_clown_nose=resize(clown_nose[0:500,0:500],(70,100))
         if(degree!=0):
                 resized_clown_nose=rotate(resized_clown_nose, degree,cval=1)
-        
-        resized_clown_nose[resized_clown_nose>=0.8]=1
-        resized_clown_nose[resized_clown_nose<0.8]=0
+        resized_clown_nose[resized_clown_nose>=0.7]=1
+        resized_clown_nose[resized_clown_nose<0.7]=0
 
         for i in range(resized_clown_nose.shape[0]):
             for j in range(resized_clown_nose.shape[1]):
                 if resized_clown_nose[i,j,1]==0:
-                    img[nosex-30+i,nosey-55+j]=(resized_clown_nose[i,j])
+                    img[nosex-30+i,nosey-50+j]=(resized_clown_nose[i,j])
 
 
         img=resize(img,(h,w))
@@ -169,6 +190,15 @@ def geteyemap(img):
         eyemap =(1-newchromamap)+lumamap
         return eyemap
 
+def getnose(midpointx,midpointy,righti,lefti):
+    nosex = int((midpointx) *1.5)
+    if(righti>lefti and righti-lefti>10):
+        nosey=int(midpointy*1.2)
+    elif(righti<lefti and lefti-righti>10):
+        nosey=int(midpointy*0.8)
+    else:
+        nosey = midpointy
+    return nosex,nosey
 ######################################################################################################
 ######################################################################################################
 ######################################################################################################
