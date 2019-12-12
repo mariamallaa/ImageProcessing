@@ -96,7 +96,8 @@ def distance(img, ic,jc):
                             dist2= math.sqrt((n-ic)**2 + (m-jc)**2)
                             if(abs(dist-dist2)/dist<30/100):
                                 if(abs(i-n)<20):
-                                    arr.append([i,j,n,m])                                
+                                    if(abs(j-m)<80):
+                                        arr.append([i,j,n,m])                                
     arrnp =np.asarray(arr)
     
     return arrnp
