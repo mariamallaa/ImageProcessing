@@ -96,7 +96,8 @@ def distance(img, ic,jc):
                             dist2= math.sqrt((n-ic)**2 + (m-jc)**2)
                             if(abs(dist-dist2)/dist<30/100):
                                 if(abs(i-n)<20):
-                                    arr.append([i,j,n,m])                                
+                                    if(abs(j-m)<80):
+                                        arr.append([i,j,n,m])                                
     arrnp =np.asarray(arr)
     
     return arrnp
@@ -108,8 +109,10 @@ def sunglassesfilter(img,midpointx,midpointy,h,w,degree):
 
 
             resized_sunglass=resize(sunglass_image[0:600,:],(100,150))
+            print(degree)
             if(degree!=0):
                 resized_sunglass=rotate(resized_sunglass, degree,cval=1)
+            show_images([resized_sunglass])
 
             resized_sunglass[resized_sunglass>=0.99607843]=1
             resized_sunglass[resized_sunglass<0.99607843]=0
@@ -125,7 +128,7 @@ def sunglassesfilter(img,midpointx,midpointy,h,w,degree):
             return finalimg
 
 def hatfilter(img,h,w,degree):
-            hat_image = io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\hat2.jpg')
+            hat_image = io.imread('hat2.jpg')
 
 
             resized_hat=resize(hat_image[0:700,:],(100,160))
@@ -149,7 +152,7 @@ def hatfilter(img,h,w,degree):
             return finalimg
 
 def clown_nose_filter(img,nosex,nosey,h,w,degree):
-        clown_nose= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\clown-nose.jpg')
+        clown_nose= io.imread('clown-nose.jpg')
         resized_clown_nose=resize(clown_nose[0:500,0:500],(70,100))
         if(degree!=0):
                 resized_clown_nose=rotate(resized_clown_nose, degree,cval=1)

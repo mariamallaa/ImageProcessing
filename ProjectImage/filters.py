@@ -7,6 +7,8 @@ import numpy as np
 import math
 from skimage.morphology import binary_erosion, binary_dilation
 from skimage import exposure
+from skimage.morphology import erosion, dilation
+from skimage.morphology import disk
 import cv2
 
 ######################################################################################################
@@ -14,6 +16,8 @@ import cv2
 ######################################################################################################
 windowsize=[3,3]
 orgin=[1,1]
+Structure = disk(2)
+
 
 
 ######################################################################################################
@@ -26,19 +30,19 @@ cam = cv2.VideoCapture(0)
 cv2.namedWindow("test")
 
 #creating adaboost trained model using cv2
-face_cascade = cv2.CascadeClassifier('C:\\Users\\xps\\Downloads\\opencv\\build\\etc\\haarcascades\\haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('C:\\opencv\\build\\etc\\haarcascades\\haarcascade_frontalface_default.xml')
 
 #val = input("press 1 for camera image press 2 for choosing an image from your computer: ")
 
 while True:
     #reading frame from camera
-    #ret, frame = cam.read()
-    #cv2.imshow("test", frame)
-    #img =frame
+    ret, frame = cam.read()
+    cv2.imshow("test", frame)
+    img =frame
 
     #reading an exisiting image
 
-    img =  io.imread("C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\friends1.jpg").astype('uint8')
+    #img =  io.imread("friends1.jpg").astype('uint8')
     #show_images([img])
 
 
@@ -48,7 +52,7 @@ while True:
 
     for (x,yt,w,h) in faces:
 
-        print("x,yt")
+        #print("x,yt")
         #crop the face
         cropped_img = img[yt:yt+h,x:x+w ,:]
         cropped_img2=img[yt-20:yt+h,x:x+w ,:]
@@ -71,23 +75,23 @@ while True:
             eyemap=geteyemap(resized_image)
             
             thresh =np.max(eyemap)*factor
-            print(eyemap)
-            print(thresh)
-            print(np.max(eyemap))
-            print("the ")
+            
+            
             eyemap[eyemap<thresh]=0
             eyemap[eyemap>thresh]=1
-            print(eyemap)
+           
 
-            #show_images([resized_image,eyemap])
+            show_images([resized_image,eyemap])
 
-
-            eyemap= erode(eyemap,windowsize,orgin)
-            eyemap= dilate(eyemap,windowsize,orgin)
+            
+            #eyemap = erosion(eyemap, Structure)
+            #eyemap = dilation(eyemap, Structure)
+            #eyemap= erode(eyemap,windowsize,orgin)
+            #eyemap= dilate(eyemap,windowsize,orgin)
                 
-            eyemap= erodesmall(eyemap,windowsize,orgin)
+           # eyemap= erodesmall(eyemap,windowsize,orgin)
                 
-
+            show_images([resized_image,eyemap])
             eye_location=distance(eyemap, 125,90)
             factor-=0.1
 
@@ -101,13 +105,15 @@ while True:
         leftj = np.mean(eye_location[:,3])
         eyearr=np.asarray([righti,rightj,lefti,leftj])
         degree=0
+        print(righti)
+        print(lefti)
         if(righti>lefti and righti-lefti>10):
             degree=20
         elif(righti<lefti and lefti-righti>10):
             degree=-20
 
-        print("mirna")
-        print(eyearr)
+        #print("mirna")
+        #print(eyearr)
         eyearr=eyearr.astype('uint16')
         
         new_croppedimg=np.zeros(eyemap.shape)
@@ -120,26 +126,28 @@ while True:
         midpointx= int((eyearr[0]+eyearr[2])/2)
         midpointy= int((eyearr[1]+eyearr[3])/2)
         #nose
-        #image_nose=resized_image[int(eyearr[0]):int(eyearr[0]*2),int(eyearr[1]):int(eyearr[3])]
-        #show_images([image_nose])
+        image_nose=resized_image[int(eyearr[0]):int(eyearr[0]*2),int(eyearr[1]):int(eyearr[3])]
+        print("Nosess")
+        show_images([image_nose])
         nosex,nosey= getnose(midpointx,midpointy,righti,lefti)
 
         new_croppedimg[nosex,nosey]=1
+        print("NOSE")
         show_images([new_croppedimg])
         img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w,degree)
-        #img[yt:yt+h,x:x+w,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
+        img[yt:yt+h,x:x+w,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
         
-        #img[yt-20:yt+h,x:x+w,:]=hatfilter(resized_image2,h,w,degree)
-        #cv2.imshow("test", img)
+        img[yt-20:yt+h,x:x+w,:]=hatfilter(resized_image2,h,w,degree)
+        cv2.imshow("test", img)
 
         show_images([img])
 
 
 
-    #cv2.imshow('img',img)
+    cv2.imshow('img',img)
    
-    print(img.shape)
-    print(img)
+    #print(img.shape)
+    #print(img)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
