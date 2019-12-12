@@ -168,7 +168,24 @@ def clown_nose_filter(img,nosex,nosey,h,w,degree):
         finalimg=(img*255).astype('uint8')
         return finalimg
     
+def mouth_filter(img,mouthx,mouthy,h,w,degree):
+        mouth= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\mouth.jpg')
+        resized_mouth=resize(mouth[0:700,0:700],(70,80))
+        if(degree!=0):
+                resized_mouth=rotate(resized_mouth, degree,cval=1)
+        resized_mouth2=np.copy(resized_mouth)
+        resized_mouth[resized_mouth>=0.7]=1
+        resized_mouth[resized_mouth<0.7]=0
 
+        for i in range(resized_mouth.shape[0]):
+            for j in range(resized_mouth.shape[1]):
+                if resized_mouth[i,j,1]==0:
+                    img[mouthx-10+i,mouthy-35+j]=(resized_mouth2[i,j])
+        img=resize(img,(h,w))
+            
+        finalimg=(img*255).astype('uint8')
+        return finalimg
+    
 
 def geteyemap(img):
         ycbcr_image = rgb2ycbcr(img).astype('uint8')
@@ -200,6 +217,16 @@ def getnose(midpointx,midpointy,righti,lefti):
     else:
         nosey = midpointy
     return nosex,nosey
+
+def getmouth(midpointx,midpointy,righti,lefti):
+    mouthx = int((midpointx) *1.94)
+    if(righti>lefti and righti-lefti>10):
+        mouthy=int(midpointy*1.2)
+    elif(righti<lefti and lefti-righti>10):
+        mouthy=int(midpointy*0.8)
+    else:
+        mouthy = midpointy
+    return mouthx,mouthy
 ######################################################################################################
 ######################################################################################################
 ######################################################################################################
