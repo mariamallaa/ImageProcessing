@@ -109,10 +109,10 @@ def sunglassesfilter(img,midpointx,midpointy,h,w,degree):
 
 
             resized_sunglass=resize(sunglass_image[0:600,:],(100,150))
-            print(degree)
+            #print(degree)
             if(degree!=0):
                 resized_sunglass=rotate(resized_sunglass, degree,cval=1)
-            show_images([resized_sunglass])
+            #show_images([resized_sunglass])
 
             resized_sunglass[resized_sunglass>=0.99607843]=1
             resized_sunglass[resized_sunglass<0.99607843]=0
@@ -204,27 +204,6 @@ def getnose(midpointx,midpointy,righti,lefti):
     return nosex,nosey
 
 
-
-
-def skinsegmentation(imgRGB,imgHSV,imgYCbCr):
-    ##RGB
-    R = imgRGB[:,:,0]
-    G = imgRGB[:,:,1]
-    B = imgRGB[:,:,2]
-    ##HSV
-    H = imgHSV[:,:,0]
-    S = imgHSV[:,:,1]
-    V = imgHSV[:,:,2]
-    ##YCbCr
-    y = imgYCbCr[:,:,0]
-    cb = imgYCbCr[:,:,1]
-    cr = imgYCbCr[:,:,2]
-
-    (R>50) && (G>40) && (B>20) && [max{max(R,G),B}– min{min(R,G),B}]>10) && (R – G >= 10) && (R>G) && (R>B)
-    Rmax=np.max(R)
-    Gmax=np.max(G)
-    Bmax=np.max(B)
-    eq1=imgRGB[R>50 and G>40 and B>20 and ]
 
 
 ######################################################################################################

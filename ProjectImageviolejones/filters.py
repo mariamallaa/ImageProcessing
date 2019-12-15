@@ -42,7 +42,7 @@ while True:
 
     #reading an exisiting image
 
-    #img =  io.imread("friends1.jpg").astype('uint8')
+    #img =  io.imread("test.jpg").astype('uint8')
     #show_images([img])
 
 
@@ -64,7 +64,7 @@ while True:
 
         resized_image=resize(cropped_img,(200,180))
         resized_image2=resize(cropped_img2,(200,180))
-        show_images([resized_image2])
+        #show_images([resized_image2])
         #finding the eyemap
         
         
@@ -81,7 +81,7 @@ while True:
             eyemap[eyemap>thresh]=1
            
 
-            show_images([resized_image,eyemap])
+            #show_images([resized_image,eyemap])
 
             
             #eyemap = erosion(eyemap, Structure)
@@ -91,28 +91,28 @@ while True:
                 
            # eyemap= erodesmall(eyemap,windowsize,orgin)
                 
-            show_images([resized_image,eyemap])
+            #show_images([resized_image,eyemap])
             eye_location=distance(eyemap, 125,90)
             factor-=0.1
 
         #print(eye_location)
         #print(eye_location.count)
-        show_images([resized_image,eyemap])
+        #show_images([resized_image,eyemap])
 
         righti = np.mean(eye_location[:,0])
         rightj = np.mean(eye_location[:,1])
         lefti = np.mean(eye_location[:,2])
         leftj = np.mean(eye_location[:,3])
         eyearr=np.asarray([righti,rightj,lefti,leftj])
-        print(righti)
-        print(rightj)
-        print(lefti)
-        print(leftj)
+        #print(righti)
+        #print(rightj)
+        #print(lefti)
+        #print(leftj)
         img_eyes=resized_image[int(eyearr[2]-10):int(eyearr[0]+10),int(eyearr[1]-20):int(eyearr[3]+20)]
-        show_images([img_eyes])
+        #show_images([img_eyes])
         degree=0
-        print(righti)
-        print(lefti)
+        #print(righti)
+        #print(lefti)
         if(righti>lefti and righti-lefti>10):
             degree=20
         elif(righti<lefti and lefti-righti>10):
@@ -133,24 +133,24 @@ while True:
         midpointy= int((eyearr[1]+eyearr[3])/2)
         #nose
         image_nose=resized_image[int(eyearr[0]):int(eyearr[0]*2),int(eyearr[1]):int(eyearr[3])]
-        print("Nosess")
-        show_images([image_nose])
+        #print("Nosess")
+        #show_images([image_nose])
         nosex,nosey= getnose(midpointx,midpointy,righti,lefti)
 
         new_croppedimg[nosex,nosey]=1
-        print("NOSE")
-        show_images([new_croppedimg])
+        #print("NOSE")
+        #show_images([new_croppedimg])
         img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w,degree)
-        show_images([img])
+        #show_images([img])
         img[yt:yt+h,x:x+w,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
-        show_images([img])
-        img[yt-20:yt+h,x:x+w,:]=hatfilter(resized_image2,h,w,degree)
-        cv2.imshow("test", img)
+        #show_images([img])
+        #img[yt-20:yt+h,x:x+w,:]=hatfilter(resized_image2,h,w,degree)
+        #cv2.imshow("test", img)
 
-        show_images([img])
+        #show_images([img])
 
 
-
+    show_images([img])
     cv2.imshow('img',img)
    
     #print(img.shape)

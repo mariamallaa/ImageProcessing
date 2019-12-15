@@ -104,15 +104,18 @@ def distance(img, ic,jc):
                     
 
 
-def sunglassesfilter(img,midpointx,midpointy,h,w,degree):
+
+#####violajones sunglasses
+
+def sunglassesfilter2(img,midpointx,midpointy,h,w,degree):
             sunglass_image = io.imread('sun.jpg')
 
 
             resized_sunglass=resize(sunglass_image[0:600,:],(100,150))
-            print(degree)
+            #print(degree)
             if(degree!=0):
                 resized_sunglass=rotate(resized_sunglass, degree,cval=1)
-            show_images([resized_sunglass])
+            #show_images([resized_sunglass])
 
             resized_sunglass[resized_sunglass>=0.99607843]=1
             resized_sunglass[resized_sunglass<0.99607843]=0
@@ -122,6 +125,37 @@ def sunglassesfilter(img,midpointx,midpointy,h,w,degree):
                     if resized_sunglass[i,j,1]==0:
                         img[midpointx-50+i,midpointy-75+j]=(resized_sunglass[i,j])
                
+            img=resize(img,(h,w))
+            
+            finalimg=(img*255).astype('uint8')
+            return finalimg
+
+
+
+
+
+def sunglassesfilter(img,midpointx,midpointy,h,w,degree,dist):
+            sunglass_image = io.imread('sun.jpg')
+
+            resized_sunglass=resize(sunglass_image[0:600,:],(100,int(dist)+80))
+            show_images([resized_sunglass])
+            print(degree)
+            if(degree!=0):
+                resized_sunglass=rotate(resized_sunglass, degree,cval=1)
+            show_images([resized_sunglass])
+            print(resized_sunglass[:,:,1])
+            print(np.max(resized_sunglass))
+            resized_sunglass[resized_sunglass>=0.9921568627450981]=1
+            resized_sunglass[resized_sunglass<0.9921568627450981]=0
+            print(resized_sunglass[:,:,1])
+            show_images([resized_sunglass])
+            for i in range(resized_sunglass.shape[0]):
+                for j in range(resized_sunglass.shape[1]):
+                    
+                    if resized_sunglass[i,j,1]==0:
+                        img[midpointx-55+i,midpointy-int(dist/2)-40+j]=(resized_sunglass[i,j])
+            print("sunglasses")
+            show_images([img])
             img=resize(img,(h,w))
             
             finalimg=(img*255).astype('uint8')
