@@ -1,2 +1,0 @@
-# ImageProcessing
- Live Cartoonization
