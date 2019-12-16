@@ -41,7 +41,14 @@ def apply(img,filtername):
     
         #crop the face
         cropped_img = img[yt:yt+h,x:x+w ,:]
-        cropped_img2=img[yt-80:yt+h,x:x+w ,:]
+        #cropped_img2=img[yt-80:yt+h,x:x+w ,:]
+
+        hatflag=0
+        if yt>90:
+            cropped_img2=img[yt-80:yt+h,x:x+w ,:]
+            hatflag=1
+        else :
+            cropped_img2=cropped_img.copy()
     
         #resize image
 
@@ -110,7 +117,8 @@ def apply(img,filtername):
         elif filtername=="mouth":
             img[yt:yt+h,x:x+w,:]=mouth_filter(resized_image,mouthx,mouthy,h,w,degree)
         elif filtername=="hat":
-            img[yt-80:yt+h,x:x+w,:]=hatfilter(resized_image2,h,w)
+            if hatflag==1:
+                img[yt-80:yt+h,x:x+w,:]=hatfilter(resized_image2,h,w)
 
 
         show_images([img])
