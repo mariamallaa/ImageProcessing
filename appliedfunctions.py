@@ -162,7 +162,7 @@ def sunglassesfilter(img,midpointx,midpointy,h,w,degree,dist):
             return finalimg
 
 def hatfilter(img,h,w):
-            hat_image = io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\hat2.jpg')
+            hat_image = io.imread('hat2.jpg')
 
 
             resized_hat=resize(hat_image[100:500,50:500],(90,140))
@@ -186,7 +186,7 @@ def hatfilter(img,h,w):
             return finalimg
 
 def clown_nose_filter(img,nosex,nosey,h,w,degree):
-        clown_nose= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\Projectimageskinsegmentation\\clown-nose.jpg')
+        clown_nose= io.imread('clown-nose.jpg')
         resized_clown_nose=resize(clown_nose[0:500,0:500],(70,100))
         if(degree!=0):
                 resized_clown_nose=rotate(resized_clown_nose, degree,cval=1)
@@ -206,9 +206,8 @@ def clown_nose_filter(img,nosex,nosey,h,w,degree):
     
 
 def mouth_filter(img,mouthx,mouthy,h,w,degree):
-        mouth= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\mouth.jpg')
+        mouth= io.imread('mouth.jpg')
         resized_mouth=resize(mouth[20:470,0:700],(65,70))
-        show_images([resized_mouth])
         if(degree!=0):
                 resized_mouth=rotate(resized_mouth, degree,cval=1)
         resized_mouth2=np.copy(resized_mouth)
@@ -322,9 +321,9 @@ def getnose(midpointx,midpointy,righti,lefti):
 def getmouth(midpointx,midpointy,righti,lefti):
     mouthx = int((midpointx) *1.96)
     if(righti>lefti and righti-lefti>10):
-        mouthy=int(midpointy*1.2)
+        mouthy=int(midpointy*1.3)
     elif(righti<lefti and lefti-righti>10):
-        mouthy=int(midpointy*0.8)
+        mouthy=int(midpointy*0.7)
     else:
         mouthy = midpointy
     return mouthx,mouthy
