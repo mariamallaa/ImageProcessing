@@ -107,8 +107,10 @@ def apply(img,filtername):
         #show_images([image_nose])
         nosex,nosey= getnose(midpointx,midpointy,righti,lefti)
         mouthx,mouthy=getmouth(midpointx,midpointy,righti,lefti)
-        new_croppedimg[nosex,nosey]=1
-        new_croppedimg[mouthx,mouthy]=1
+        if nosex<img.shape[0] and nosey<img.shape[1]:
+            new_croppedimg[nosex,nosey]=1
+        if mouthx<img.shape[0] and mouthy<img.shape[1]:
+            new_croppedimg[mouthx,mouthy]=1
         
         if filtername=="eye":
             img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w,degree)
