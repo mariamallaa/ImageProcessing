@@ -111,7 +111,7 @@ def apply(img,filtername):
         new_croppedimg[mouthx,mouthy]=1
         
         if filtername=="eye":
-            img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w,degree,dist)
+            img[yt:yt+h,x:x+w ,:]=sunglassesfilter(resized_image,midpointx,midpointy,h,w,degree)
         elif filtername=="nose":
             img[yt:yt+h,x:x+w,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
         elif filtername=="mouth":

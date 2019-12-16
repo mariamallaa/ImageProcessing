@@ -128,7 +128,7 @@ def sunglassesfilter(img,midpointx,midpointy,h,w,degree):
             return finalimg
 
 def hatfilter(img,h,w):
-            hat_image = io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\hat2.jpg')
+            hat_image = io.imread('hat2.jpg')
 
 
             resized_hat=resize(hat_image[100:500,50:500],(90,140))
@@ -152,7 +152,7 @@ def hatfilter(img,h,w):
             return finalimg
 
 def clown_nose_filter(img,nosex,nosey,h,w,degree):
-        clown_nose= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImageviolejones\\clown-nose.jpg')
+        clown_nose= io.imread('clown-nose.jpg')
         resized_clown_nose=resize(clown_nose[0:500,0:500],(70,100))
         if(degree!=0):
                 resized_clown_nose=rotate(resized_clown_nose, degree,cval=1)
@@ -172,7 +172,7 @@ def clown_nose_filter(img,nosex,nosey,h,w,degree):
     
 
 def mouth_filter(img,mouthx,mouthy,h,w,degree):
-        mouth= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\ProjectImage\\mouth.jpg')
+        mouth= io.imread('mouth.jpg')
         resized_mouth=resize(mouth[20:470,0:700],(65,70))
         if(degree!=0):
                 resized_mouth=rotate(resized_mouth, degree,cval=1)
@@ -190,7 +190,7 @@ def mouth_filter(img,mouthx,mouthy,h,w,degree):
         return finalimg
 
 def face_filter(img,x,y,h,w,degree):
-        face= io.imread('C:\\Users\\xps\\Desktop\\hh\\ImageProcessing\\dog.jpg')
+        face= io.imread('dog.jpg')
         resized_face=resize(face[0:400,0:500],(160,150))
         if(degree!=0):
                 resized_face=rotate(resized_face, degree,cval=1)
