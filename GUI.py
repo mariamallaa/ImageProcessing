@@ -23,18 +23,30 @@ def apply_filter():
     
     print(master.eye.get(),master.mouth.get(),master.nose.get(),master.hat.get())
     if master.eye.get() ==1:
-        apply(master.img,"eye") 
         master.eye.set(0)
-        master.destroy
+        img=master.img.copy()
+        master.destroy()
+        apply(img,"eye") 
+        
+        
     elif master.mouth.get() ==1:
-        apply(master.img,"mouth")
         master.mouth.set(0)
+        img=master.img.copy()
+        master.destroy()
+        apply(img,"mouth")
+        
     elif master.nose.get()==1:
-        apply(master.img,"nose")
         master.nose.set(0)
+        img=master.img.copy()
+        master.destroy()
+        apply(img,"nose")
+        
     elif master.hat.get()==1:
-        apply(master.img,"hat")
         master.hat.set(0)
+        img=master.img.copy()
+        master.destroy()
+        apply(img,"hat")
+        
     
 def browse_file():
     
