@@ -197,7 +197,8 @@ def clown_nose_filter(img,nosex,nosey,h,w,degree):
         for i in range(resized_clown_nose.shape[0]):
             for j in range(resized_clown_nose.shape[1]):
                 if resized_clown_nose[i,j,1]==0:
-                    img[nosex-30+i,nosey-50+j]=(resized_clown_nose[i,j])
+                    if nosex-30+i<img.shape[0] and  nosey-50+j<img.shape[1]:
+                        img[nosex-30+i,nosey-50+j]=(resized_clown_nose[i,j])
 
 
         img=resize(img,(h,w))
@@ -218,7 +219,8 @@ def mouth_filter(img,mouthx,mouthy,h,w,degree):
         for i in range(resized_mouth.shape[0]):
             for j in range(resized_mouth.shape[1]):
                 if resized_mouth[i,j,1]==0:
-                    img[mouthx-20+i,mouthy-35+j]=(resized_mouth2[i,j])
+                    if mouthx-20+i<img.shape[0] and  mouthy-35+j<img.shape[1]:
+                        img[mouthx-20+i,mouthy-35+j]=(resized_mouth2[i,j])
         img=resize(img,(h,w))
             
         finalimg=(img*255).astype('uint8')
