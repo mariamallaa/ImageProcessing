@@ -123,7 +123,8 @@ def sunglassesfilter2(img,midpointx,midpointy,h,w,degree):
             for i in range(resized_sunglass.shape[0]):
                 for j in range(resized_sunglass.shape[1]):
                     if resized_sunglass[i,j,1]==0:
-                        img[midpointx-50+i,midpointy-75+j]=(resized_sunglass[i,j])
+                        if midpointx-50+i<img.shape[0] and  midpointy-75+j<img.shape[1]:
+                            img[midpointx-50+i,midpointy-75+j]=(resized_sunglass[i,j])
                
             img=resize(img,(h,w))
             

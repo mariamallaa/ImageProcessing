@@ -23,13 +23,14 @@ import cv2
 ######################################################################################################
 ######################################################################################################
 def apply(img,filtername):
-
+    img=img[:,:,0:3]
     faces = getfaces(img)
     hi=1
 
     for (x,yt,w,h) in faces:
         
         cropped_img = img[yt:yt+h,x:x+w ,:]
+        show_images([cropped_img])
         
         hatflag=0
         if yt>90:
@@ -104,15 +105,17 @@ def apply(img,filtername):
         
         nosex,nosey= getnose(midpointx,midpointy,righti,lefti)
         mouthx,mouthy=getmouth(midpointx,midpointy,righti,lefti)
-
-        new_croppedimg[nosex,nosey]=1
-        new_croppedimg[mouthx,mouthy]=1
+        if nosex <new_croppedimg.shape[0] and nosey <new_croppedimg.shape[1]:
+            new_croppedimg[nosex,nosey]=1
+            if filtername=="nose":
+                img[yt:yt+h,x:x+w,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
+        if mouthx <new_croppedimg.shape[0] and mouthy <new_croppedimg.shape[1]:
+            new_croppedimg[mouthx,mouthy]=1
+            if filtername=="mouth":
+                img[yt:yt+h,x:x+w,:]=mouth_filter(resized_image,mouthx,mouthy,h,w,degree)
+        
         if filtername=="eye":
             img[yt:yt+h,x:x+w ,:]=sunglassesfilter2(resized_image,midpointx,midpointy,h,w,degree)
-        elif filtername=="nose":
-            img[yt:yt+h,x:x+w,:]=clown_nose_filter(resized_image,nosex,nosey,h,w,degree)
-        elif filtername=="mouth":
-            img[yt:yt+h,x:x+w,:]=mouth_filter(resized_image,mouthx,mouthy,h,w,degree)
         elif filtername=="hat":
             if hatflag==1:
                 img[yt-80:yt+h,x:x+w,:]=hatfilter(resized_image2,h,w)
